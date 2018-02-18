@@ -28,15 +28,16 @@ for (i = 0; i < allURLS.length; i++)
 //		Likely a javascript thing I don't know about.
 
 // I think this is a good start to pull the JSON objects at least.
+// Also I was testing all of this with NPM locally rather than Azure.
 
 var server = http.createServer(function(request, response) 
 {
 
-    response.writeHead(200, {"Content-Type": "text/plain"});
+    	response.writeHead(200, {"Content-Type": "text/plain"});
 	for (i = 0; i < allURLS.length; i++)
 	{
 		//response.end(allJSON[i]); // Formatted as a string without linebreaks yuck
-		console.log(allJSON[i]);
+		//console.log(allJSON[i]);
 	}
 
 });
