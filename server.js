@@ -1,10 +1,11 @@
 var http = require('http');
+var fs = require('fs');
 
 var allURLS = ["https://johnlaschobersoftwareengineering.azurewebsites.net/info.json", "http://alisp18.azurewebsites.net/myinfo.json"];
 var allJSON = [];
 
 var request = require('request'); // Imports library
-
+var jsonData;
 for (i = 0; i < allURLS.length; i++)
 {
 	request(allURLS[i], function (error, response, body)
@@ -12,32 +13,35 @@ for (i = 0; i < allURLS.length; i++)
 		if (!error && response.statusCode == 200) 
 		{
 			var importedJSON = JSON.parse(body);
-			console.log(importedJSON);
-			allJSON[i] = JSON.stringify(importedJSON);
-			console.log(allJSON[i]);
+			
+			//console.log(importedJSON);
+			allJSON.push(importedJSON);
+			console.log(allJSON.length);
+			if (allJSON.length == allURLS.length)
+			{
+				// You have all JSON objects
+				// Now do stuff
+			}
 		}
 	});
 }
 
-// Current problems:
-// 1) Storing JSON as String in array simply to try to display it on the site
-//  	^ Not recommended for final project, just for testing
-// 2) I am awful at Javascript
-// 3) allJSON array can successfully output to console at lines 15 and 17
-//		but won't ouput when the server is called (array returns undefined).
-//		Likely a javascript thing I don't know about.
-
-// I think this is a good start to pull the JSON objects at least.
-// Also I was testing all of this with NPM locally rather than Azure.
+fs.writeFile("test.txt", jsonData, function(err) 
+{
+    if(err) 
+	{
+        return console.log(err);
+    }
+});
 
 var server = http.createServer(function(request, response) 
 {
 
-    	response.writeHead(200, {"Content-Type": "text/plain"});
-	for (i = 0; i < allURLS.length; i++)
+    response.writeHead(200, {"Content-Type": "text/plain"});
+
+	for (j = 0; j < allURLS.length; j++)
 	{
-		//response.end(allJSON[i]); // Formatted as a string without linebreaks yuck
-		//console.log(allJSON[i]);
+		console.log(allJSON[j]);
 	}
 
 });
