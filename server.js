@@ -3,13 +3,11 @@ var http = require('http');
 var fs = require('fs');
 
 // Define URLs here
-var allURLS = ["https://johnlaschobersoftwareengineering.azurewebsites.net/info.json", "http://alisp18.azurewebsites.net/myinfo.json"];
+var allURLS = ["https://csoftware.azurewebsites.net/groupinfo.json", "https://johnlaschobersoftwareengineering.azurewebsites.net/info.json", "https://cpsc440.azurewebsites.net/myInfo.json", "http://alisp18.azurewebsites.net/myinfo.json"];
 // Where JSON objects will be stored
 var allJSON = [];
 
-
-
-
+var concattedJSON;
 
 for (i = 0; i < allURLS.length; i++) // Initiates on server launch
 {
@@ -19,36 +17,51 @@ for (i = 0; i < allURLS.length; i++) // Initiates on server launch
 		{
 			var importedJSON = JSON.parse(body);
 			allJSON.push(importedJSON);
-			console.log(allJSON.length);
+			//console.log(allJSON.length);
 			if (allJSON.length == allURLS.length)
 			{
 				// You have all JSON objects
 				// Now do stuff
 				// Like make a big, concatenated JSON file
 				// idk
+				var concattedJSON = "";
+				concattedJSON = '{"members":[';
+				for (j = 0; j < allURLS.length; j++)
+				{
+					concattedJSON += JSON.stringify(allJSON[j]);
+					if (j != allURLS.length - 1)
+					{
+						concattedJSON += ',';
+					}
+				}
+				concattedJSON += ']}';
+				//console.log(concattedJSON);
+				var finalJSON = JSON.parse(concattedJSON);
+				console.log(finalJSON);
+				var stringFinal = JSON.stringify(finalJSON, null, 4);
+				fs.writeFile("groupJSON.json", stringFinal,'utf-8', function(err)  // File writer for saving a json file, not done
+				{
+					if(err) 
+					{
+						return console.log(err);
+					}
+				});
 			}
 		}
 	});
 } // Should make this a function so we call updates whenever
 
-var jsonData; // Should be set to the final concatenated megaJSON file eventually
-fs.writeFile("test.txt", jsonData, function(err)  // File writer for saving a json file, not done
-{
-    if(err) 
-	{
-        return console.log(err);
-    }
-});
+
 
 var server = http.createServer(function(request, response)  // On user connect
 {
 
     response.writeHead(200, {"Content-Type": "text/plain"});
 
-	for (j = 0; j < allURLS.length; j++)
-	{
-		console.log(allJSON[j]); // Working correctly, verifies we have our data stored correctly
-	}
+	var importedJSON = JSON.parse(fs.readFileSync('groupJSON.json', 'utf8'));
+	importedJSON = JSON.stringify(importedJSON);
+	response.end(importedJSON);
+	//response.end(importedJSON);
 
 });
 
