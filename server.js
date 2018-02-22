@@ -63,7 +63,8 @@ var server = http.createServer(function(request, response)  // On user connect
 
 	//var importedJSON = JSON.parse(fs.readFileSync('groupJSON.json', 'utf8'));
 	var displayJSON = JSON.stringify(finalJSON);
-	response.end(displayJSON);
+	response.write(displayJSON);
+	response.end();
 	//response.end(importedJSON);
 
 });
