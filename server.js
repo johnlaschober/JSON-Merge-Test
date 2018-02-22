@@ -8,7 +8,7 @@ var allURLS = ["https://csoftware.azurewebsites.net/groupinfo.json", "https://jo
 var allJSON = [];
 
 var concattedJSON;
-
+var finalJSON;
 for (i = 0; i < allURLS.length; i++) // Initiates on server launch
 {
 	request(allURLS[i], function (error, response, body)
@@ -36,8 +36,9 @@ for (i = 0; i < allURLS.length; i++) // Initiates on server launch
 				}
 				concattedJSON += ']}';
 				//console.log(concattedJSON);
-				var finalJSON = JSON.parse(concattedJSON);
+				finalJSON = JSON.parse(concattedJSON);
 				console.log(finalJSON);
+				/*
 				var stringFinal = JSON.stringify(finalJSON, null, 4);
 				fs.writeFile("groupJSON.json", stringFinal,'utf-8', function(err)  // File writer for saving a json file, not done
 				{
@@ -46,6 +47,8 @@ for (i = 0; i < allURLS.length; i++) // Initiates on server launch
 						return console.log(err);
 					}
 				});
+				*/
+				
 			}
 		}
 	});
@@ -58,9 +61,9 @@ var server = http.createServer(function(request, response)  // On user connect
 
     response.writeHead(200, {"Content-Type": "text/plain"});
 
-	var importedJSON = JSON.parse(fs.readFileSync('groupJSON.json', 'utf8'));
-	importedJSON = JSON.stringify(importedJSON);
-	response.end(importedJSON);
+	//var importedJSON = JSON.parse(fs.readFileSync('groupJSON.json', 'utf8'));
+	var displayJSON = JSON.stringify(finalJSON);
+	response.end(displayJSON);
 	//response.end(importedJSON);
 
 });
