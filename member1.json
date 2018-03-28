@@ -1,0 +1,11 @@
+{
+    "firstName": "John",
+    "lastName": "Laschober",
+    "preferredName": "John",
+    "teamName": "Great White Buffalos",
+    "seatLocation": "9-2",
+    "roles": [
+        "Team Member",
+        "Product Owner"
+    ]
+}

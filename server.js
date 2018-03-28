@@ -71,6 +71,18 @@ var liveHTML = '<head>\
 		{\
 			try\
 			{\
+				var path = "";\
+				if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("HOME")))\
+				{\
+					path = Environment.GetEnvironmentVariable("HOME") + "\\site\\wwwroot\\bin";\
+				}\
+				else\
+				{\
+					path = ".";\
+				}	\
+				path += "\\groupJSON.json";\
+				console.log(path);\
+				xhr.send(null);\
 				var data = getJSON("https://jsonmergingtest.azurewebsites.net/groupJSON.json");\
 				data = JSON.parse(data);\
 				for (i = 0; i < 4; i++)\
@@ -88,8 +100,8 @@ var liveHTML = '<head>\
 			{\
 				console.log("groupJSON.json could not be accessed. " + err);\
 			}\
-			 function getJSON(url) \
-			 {\
+			function getJSON(url) \
+			{\
 				var resp ;\
 				var xmlHttp ;\
 				resp  = "" ;\
@@ -119,7 +131,8 @@ var server = http.createServer(function (request, response)  // On user connect
     //response.writeHead(200, { "Content-Type": "text/plain" });
     try
     {
-        var importedJSON = JSON.parse(fs.readFileSync('groupJSON.json', 'utf8'));    // Reading from input
+        //var importedJSON = JSON.parse(fs.readFileSync('groupJSON.json', 'utf8'));    // Reading from input
+		//console.log(JSON.parse(fs.readFileSync('groupJSON.json', 'utf8')));
         //response.write(JSON.stringify(importedJSON, null, 4));
 		response.write(liveHTML);
 		response.end();
